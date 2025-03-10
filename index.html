@@ -12,18 +12,27 @@
     font-family: "Monaco", monospace;
     color: rgb(46, 46, 46);
     font-size: 45px;
-    background-color: lightblue;
     text-align: center;
+    margin: auto;
 }
 
 .insideTitle {
     font-family: "Monaco", monospace;
-    color: rgb(73, 73, 73);
+    color: rgb(97, 97, 97);
     font-size: 22px;
     width: 60%;
     margin: auto;
-    background-color: rgb(42, 110, 133);
     text-align: center;
+}
+
+.button {
+    background-color: rgb(233, 142, 142);
+    color: rgb(255, 255, 255);
+    width: 15%;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 70px;
+    margin: auto;
 }
 </style>
 
@@ -32,7 +41,6 @@
     <title>Prototype</title>
 </head>
 <body>
-    <p>Pick...</p>
     <div class ="img">
         <img src="https://phishingquiz.withgoogle.com/static/intro-hero.png" width="60%">
     </div>
@@ -44,8 +52,16 @@
                 AI is already making phishing attacks more sophisticated, personalized, and common.
                 <br><br>
                 Think you can tell what’s real or fake?</p>
+                <button class="button" onclick="goToNextPage()">take the quiz</button>
         </div>
     </div>
+
+
+    <script>
+        function goToNextPage() {
+            window.location.href = "page1.html";
+        }
+        </script>
 
 </body>
 </html>
