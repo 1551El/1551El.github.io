@@ -30,17 +30,51 @@
             text-align: center;
         }
 
+        .hero-section {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
         .hero-image {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             height: auto;
-            margin: 0 auto 40px;
+            margin: 0 auto;
             display: block;
             transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
         .hero-image:hover {
-            transform: scale(1.02);
+            transform: translateY(-5px);
+        }
+
+        .floating-shield {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            right: calc(50% - 220px);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-lock {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            left: calc(50% - 200px);
+            animation: float 3s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .title {
@@ -107,6 +141,11 @@
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
         }
 
         .feature-card h3 {
@@ -133,6 +172,11 @@
                 width: 90%;
             }
 
+            .floating-shield,
+            .floating-lock {
+                display: none;
+            }
+
             .description {
                 font-size: 1rem;
                 padding: 0 15px;
@@ -157,7 +201,11 @@
 </head>
 <body>
     <div class="container">
-        <img class="hero-image" src="https://phishingquiz.withgoogle.com/static/intro-hero.png" alt="Phishing Quiz Hero Image">
+        <div class="hero-section">
+            <img class="hero-image" src="https://cdn-icons-png.flaticon.com/512/1918/1918543.png" alt="Phishing Protection Illustration">
+            <img class="floating-shield" src="https://cdn-icons-png.flaticon.com/512/1835/1835793.png" alt="Security Shield">
+            <img class="floating-lock" src="https://cdn-icons-png.flaticon.com/512/483/483408.png" alt="Security Lock">
+        </div>
         
         <h1 class="title">Can You Spot When You're Being Phished?</h1>
         
