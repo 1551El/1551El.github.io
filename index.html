@@ -32,49 +32,119 @@
 
         .hero-section {
             position: relative;
-            margin-bottom: 40px;
-        }
-
-        .hero-image {
-            width: 100%;
+            height: 300px;
+            margin: 0 auto 60px;
             max-width: 500px;
-            height: auto;
-            margin: 0 auto;
-            display: block;
-            transition: transform 0.3s ease;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
-        .hero-image:hover {
-            transform: translateY(-5px);
+        .fishing-scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
 
-        .floating-shield {
+        .water {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            top: 20px;
-            right: calc(50% - 220px);
-            animation: float 3s ease-in-out infinite;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
+            border-radius: 100% 100% 0 0;
+            overflow: hidden;
         }
 
-        .floating-lock {
+        .water::before {
+            content: '';
             position: absolute;
-            width: 60px;
-            height: 60px;
-            bottom: 40px;
-            left: calc(50% - 200px);
-            animation: float 3s ease-in-out infinite;
-            animation-delay: 1s;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: waves 3s linear infinite;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
+        @keyframes waves {
+            0% {
+                transform: translateX(0) scaleY(1);
             }
             50% {
-                transform: translateY(-10px);
+                transform: translateX(-25%) scaleY(0.5);
             }
+            100% {
+                transform: translateX(-50%) scaleY(1);
+            }
+        }
+
+        .fishing-rod {
+            position: absolute;
+            top: 40px;
+            right: 50%;
+            width: 4px;
+            height: 120px;
+            background-color: #2d3748;
+            transform-origin: bottom right;
+            animation: rodMovement 3s ease-in-out infinite;
+        }
+
+        .fishing-line {
+            position: absolute;
+            top: 40px;
+            right: 50%;
+            width: 2px;
+            height: 160px;
+            background: #718096;
+            transform-origin: top;
+            animation: lineMovement 3s ease-in-out infinite;
+        }
+
+        .hook {
+            position: absolute;
+            bottom: -10px;
+            right: -6px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #718096;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+        }
+
+        .fish {
+            position: absolute;
+            bottom: 40px;
+            right: calc(50% - 30px);
+            width: 40px;
+            height: 20px;
+            background-color: #ed8936;
+            border-radius: 50% 20% 20% 50%;
+            animation: fishMovement 3s ease-in-out infinite;
+        }
+
+        .fish::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            background-color: #ed8936;
+            clip-path: polygon(0 50%, 100% 0, 100% 100%);
+        }
+
+        @keyframes rodMovement {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(-5deg); }
+        }
+
+        @keyframes lineMovement {
+            0%, 100% { transform: rotate(10deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        @keyframes fishMovement {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(20px) translateY(-10px); }
         }
 
         .title {
@@ -164,17 +234,12 @@
                 padding: 20px 15px;
             }
 
+            .hero-section {
+                height: 250px;
+            }
+
             .title {
                 font-size: 2rem;
-            }
-
-            .hero-image {
-                width: 90%;
-            }
-
-            .floating-shield,
-            .floating-lock {
-                display: none;
             }
 
             .description {
@@ -196,15 +261,24 @@
             .content {
                 padding: 20px;
             }
+
+            .hero-section {
+                height: 200px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="hero-section">
-            <img class="hero-image" src="https://cdn-icons-png.flaticon.com/512/1918/1918543.png" alt="Phishing Protection Illustration">
-            <img class="floating-shield" src="https://cdn-icons-png.flaticon.com/512/1835/1835793.png" alt="Security Shield">
-            <img class="floating-lock" src="https://cdn-icons-png.flaticon.com/512/483/483408.png" alt="Security Lock">
+            <div class="fishing-scene">
+                <div class="water"></div>
+                <div class="fishing-rod"></div>
+                <div class="fishing-line">
+                    <div class="hook"></div>
+                </div>
+                <div class="fish"></div>
+            </div>
         </div>
         
         <h1 class="title">Can You Spot When You're Being Phished?</h1>
