@@ -41,82 +41,64 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background-color: #4a90e2;
+            background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
             border-radius: 15px;
             overflow: hidden;
         }
 
-        .hook {
-            position: absolute;
-            top: 25%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 70px;
-            background: #666666;
-            border-radius: 6px;
-            animation: hookFloat 3s ease-in-out infinite;
-        }
-
-        /* The eye (loop) at the top */
-        .hook::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            border: 6px solid #666666;
-            border-radius: 50%;
-            background: transparent;
-        }
-
-        /* The curved bend */
-        .hook::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            border: 12px solid #666666;
-            border-radius: 50%;
-            border-top-color: transparent;
-            border-right-color: transparent;
-            transform: translateX(-75%) rotate(-45deg);
-            background: transparent;
-        }
-
-        /* The barb */
-        .hook-point {
-            position: absolute;
-            bottom: -25px;
-            right: -22px;
-            width: 15px;
-            height: 15px;
-            background: #666666;
-            clip-path: polygon(0 0, 100% 100%, 0 100%);
-            transform: rotate(135deg);
-        }
-
         .fish {
             position: absolute;
-            bottom: 25%;
-            left: 50%;
-            transform: translateX(-50%);
             width: 80px;
             height: 40px;
-            animation: fishSwim 4s ease-in-out infinite;
+        }
+
+        .fish-1 {
+            bottom: 30%;
+            left: 20%;
+            animation: fishSwim1 6s ease-in-out infinite;
+        }
+
+        .fish-2 {
+            top: 40%;
+            right: 25%;
+            transform: scaleX(-1);
+            animation: fishSwim2 7s ease-in-out infinite;
+        }
+
+        .fish-3 {
+            bottom: 60%;
+            left: 40%;
+            transform: scale(0.8);
+            animation: fishSwim3 8s ease-in-out infinite;
         }
 
         .fish-body {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #FF7B00, #FFA041);
             border-radius: 50% 20% 20% 50%;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .fish-1 .fish-body {
+            background: linear-gradient(45deg, #FF6B6B, #FF8787);
+        }
+
+        .fish-2 .fish-body {
+            background: linear-gradient(45deg, #4FD1C5, #68D391);
+        }
+
+        .fish-3 .fish-body {
+            background: linear-gradient(45deg, #F6E05E, #FAF089);
+        }
+
+        .fish-scales {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 20%, transparent 20%);
+            background-size: 12px 12px;
+            border-radius: 50% 20% 20% 50%;
         }
 
         .fish-tail {
@@ -126,9 +108,22 @@
             transform: translateY(-50%);
             width: 20px;
             height: 25px;
-            background: #FF9020;
             clip-path: polygon(0 0, 0 100%, 100% 50%);
+        }
+
+        .fish-1 .fish-tail {
+            background: #FF8787;
             animation: tailWag 0.5s ease-in-out infinite alternate;
+        }
+
+        .fish-2 .fish-tail {
+            background: #68D391;
+            animation: tailWag 0.4s ease-in-out infinite alternate;
+        }
+
+        .fish-3 .fish-tail {
+            background: #FAF089;
+            animation: tailWag 0.6s ease-in-out infinite alternate;
         }
 
         .fish-eye {
@@ -139,7 +134,7 @@
             height: 8px;
             background: white;
             border-radius: 50%;
-            border: 2px solid #2C5282;
+            border: 2px solid rgba(0, 0, 0, 0.3);
         }
 
         .fish-fin {
@@ -148,19 +143,47 @@
             left: 30px;
             width: 15px;
             height: 12px;
-            background: #FF9020;
             clip-path: polygon(0 100%, 50% 0, 100% 100%);
         }
 
-        @keyframes hookFloat {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(15px); }
+        .fish-1 .fish-fin {
+            background: #FF8787;
         }
 
-        @keyframes fishSwim {
-            0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-            25% { transform: translateX(-30%) translateY(-10px) rotate(-5deg); }
-            75% { transform: translateX(-70%) translateY(10px) rotate(5deg); }
+        .fish-2 .fish-fin {
+            background: #68D391;
+        }
+
+        .fish-3 .fish-fin {
+            background: #FAF089;
+        }
+
+        .fish-gills {
+            position: absolute;
+            left: 25px;
+            top: 10px;
+            width: 15px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        @keyframes fishSwim1 {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(50px) translateY(-20px) rotate(-5deg); }
+            75% { transform: translateX(-30px) translateY(15px) rotate(5deg); }
+        }
+
+        @keyframes fishSwim2 {
+            0%, 100% { transform: scaleX(-1) translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: scaleX(-1) translateX(-40px) translateY(25px) rotate(5deg); }
+            75% { transform: scaleX(-1) translateX(20px) translateY(-15px) rotate(-5deg); }
+        }
+
+        @keyframes fishSwim3 {
+            0%, 100% { transform: scale(0.8) translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: scale(0.8) translateX(-30px) translateY(-10px) rotate(-3deg); }
+            75% { transform: scale(0.8) translateX(40px) translateY(20px) rotate(3deg); }
         }
 
         @keyframes tailWag {
@@ -257,16 +280,6 @@
             .hero-section {
                 height: 200px;
             }
-
-            .fish {
-                width: 60px;
-                height: 30px;
-            }
-
-            .hook {
-                width: 12px;
-                height: 70px;
-            }
         }
     </style>
 </head>
@@ -274,14 +287,29 @@
     <div class="container">
         <div class="hero-section">
             <div class="fishing-scene">
-                <div class="hook">
-                    <div class="hook-point"></div>
-                </div>
-                <div class="fish">
+                <div class="fish fish-1">
                     <div class="fish-body"></div>
+                    <div class="fish-scales"></div>
                     <div class="fish-tail"></div>
                     <div class="fish-eye"></div>
                     <div class="fish-fin"></div>
+                    <div class="fish-gills"></div>
+                </div>
+                <div class="fish fish-2">
+                    <div class="fish-body"></div>
+                    <div class="fish-scales"></div>
+                    <div class="fish-tail"></div>
+                    <div class="fish-eye"></div>
+                    <div class="fish-fin"></div>
+                    <div class="fish-gills"></div>
+                </div>
+                <div class="fish fish-3">
+                    <div class="fish-body"></div>
+                    <div class="fish-scales"></div>
+                    <div class="fish-tail"></div>
+                    <div class="fish-eye"></div>
+                    <div class="fish-fin"></div>
+                    <div class="fish-gills"></div>
                 </div>
             </div>
         </div>
