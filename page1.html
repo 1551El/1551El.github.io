@@ -76,7 +76,7 @@ body {
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     margin-bottom: 25px;
 }
 
@@ -230,6 +230,53 @@ body {
     text-decoration: underline;
 }
 
+.next-button {
+    display: block;
+    margin: 25px auto;
+    background: linear-gradient(135deg, #60A5FA, #34D399);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 15px 30px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.next-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.next-button:hover::before {
+    left: 100%;
+}
+
+.next-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(96, 165, 250, 0.4);
+}
+
+.next-button:disabled {
+    background: #1E293B;
+    cursor: not-allowed;
+    transform: none;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 20px;
@@ -281,12 +328,12 @@ body {
                 <div class="email-header">
                     <img class="profile-img" src="https://freepngimg.com/save/66726-customer-account-google-service-button-search-logo/512x512" alt="Profile">
                     <div class="email-info">
-                        <span class="email-name">LEGOSS support@legosswatches.co</span>
-                        <span class="email-address">&lt;via shared.klaviyomail.com&gt;</span>
+                        <span class="email-name" id="email-name">LEGOSS support@legosswatches.co</span>
+                        <span class="email-address" id="email-address">&lt;via shared.klaviyomail.com&gt;</span>
                     </div>
-                    <span class="text-left">sön 9 mars</span>
+                    <span class="text-left" id="text-left">sön 9 mars</span>
                 </div>
-                <div class="message-container">
+                <div class="message-container" id="message-container">
                     Hi Mohammad,<br><br>
                     Listen, I spoke to the bosses earlier today.<br><br>
                     And well, they told me that we can't really run a sale today.<br><br>
@@ -301,22 +348,99 @@ body {
                     – Ahmed from the LEGOSS
                 </div>
             </div>
+            <button class="next-button" id="nextButton" onclick="nextEmail()">Next</button>
         </div>
     </div>
 
     <script>
         let score = 0;
         let totalAttempts = 0;
-        const currentEmail = {
-            isPhishing: true,
-            explanation: `This is a phishing email. Here are the red flags:
-            1. Suspicious sender domain (klaviyomail.com)
-            2. Creates urgency ("I'd be quick")
-            3. Suspicious narrative (employee going against company policy)
-            4. Suspicious discount code
-            5. Suspicious link (https://virus)
-            6. Poor grammar and unprofessional tone`
-        };
+        let currentEmailIndex = 0;
+        const emails = [
+            {
+                isPhishing: true,
+                sender: "LEGOSS support@legosswatches.co",
+                senderAddress: "<via shared.klaviyomail.com>",
+                date: "sön 9 mars",
+                content: `Hi Mohammad,<br><br>
+                    Listen, I spoke to the bosses earlier today.<br><br>
+                    And well, they told me that we can't really run a sale today.<br><br>
+                    I REALLY wanted to get you guys a sweet deal.<br><br>
+                    And I might lose my job for this…<br><br>
+                    But I've gone ahead and made a code anyway.<br><br>
+                    The code is NOTACODE (not suspicious).<br><br>
+                    I did it so quickly, I can't remember the % off so you'll have to find out at checkout.<br><br>
+                    <a href="https://virus">[SHOP HERE]</a><br><br>
+                    I don't know how long it will work for before they notice and take it down so I'd be quick.<br><br>
+                    It was nice knowing you.<br><br>
+                    – Ahmed from the LEGOSS`,
+                explanation: `This is a phishing email. Here are the red flags:
+                1. Suspicious sender domain (klaviyomail.com)
+                2. Creates urgency ("I'd be quick")
+                3. Suspicious narrative (employee going against company policy)
+                4. Suspicious discount code
+                5. Suspicious link (https://virus)
+                6. Poor grammar and unprofessional tone`
+            },
+            {
+                isPhishing: false,
+                sender: "Amazon.com",
+                senderAddress: "<order-confirmation@amazon.com>",
+                date: "Today, 14:32",
+                content: `Hello John,<br><br>
+                    Thank you for your order. We're preparing the following items for shipment:<br><br>
+                    <strong>Order #102-8876294-3499401</strong><br>
+                    Estimated delivery: April 15, 2025<br><br>
+                    <ul style="list-style-type: disc; padding-left: 20px;">
+                        <li>Wireless Noise Cancelling Headphones - $149.99</li>
+                        <li>USB-C Charging Cable (2-Pack) - $12.99</li>
+                    </ul><br>
+                    Your order total: <strong>$162.98</strong><br><br>
+                    You can track your package or make changes to your order by visiting <a href="https://www.amazon.com/orders">Your Orders</a> on Amazon.com.<br><br>
+                    If you have any questions, please visit our <a href="https://www.amazon.com/help">Help Center</a>.<br><br>
+                    Thank you for shopping with Amazon!<br><br>
+                    This email was sent from a notification-only address that cannot accept incoming email. Please do not reply to this message.`,
+                explanation: `This is a legitimate email. Here's why:
+                1. Correct sender domain (amazon.com)
+                2. Includes specific order details and numbers
+                3. No urgent calls to action
+                4. Links go to the actual Amazon website
+                5. Professional tone and formatting
+                6. Includes the standard "do not reply" message`
+            }
+        ];
+
+        // Load the initial email
+        loadEmail(currentEmailIndex);
+
+        function loadEmail(index) {
+            // Reset the UI
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.style.display = 'none';
+            document.querySelectorAll('.button').forEach(button => button.disabled = false);
+            
+            // Get the current email data
+            const email = emails[index];
+            
+            // Update the email container
+            document.querySelector('.email-name').textContent = email.sender;
+            document.querySelector('.email-address').textContent = email.senderAddress;
+            document.querySelector('.text-left').textContent = email.date;
+            document.querySelector('.message-container').innerHTML = email.content;
+            
+            // Update next button state
+            const nextButton = document.getElementById('nextButton');
+            if (nextButton) {
+                nextButton.disabled = index >= emails.length - 1;
+            }
+        }
+
+        function nextEmail() {
+            if (currentEmailIndex < emails.length - 1) {
+                currentEmailIndex++;
+                loadEmail(currentEmailIndex);
+            }
+        }
 
         function checkAnswer(userAnswer) {
             const feedbackDiv = document.getElementById('feedback');
@@ -327,6 +451,7 @@ body {
             
             // Update score and total attempts
             totalAttempts++;
+            const currentEmail = emails[currentEmailIndex];
             const isCorrect = (userAnswer === 'phishing' && currentEmail.isPhishing) || 
                             (userAnswer === 'legitimate' && !currentEmail.isPhishing);
             
