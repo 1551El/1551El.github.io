@@ -148,6 +148,16 @@ body {
     backdrop-filter: blur(10px);
 }
 
+.feedback ol {
+    margin-top: 10px;
+    margin-left: 20px;
+    text-align: left;
+}
+
+.feedback li {
+    margin-bottom: 8px;
+}
+
 .feedback.correct {
     background: rgba(16, 185, 129, 0.1);
     color: #34D399;
@@ -373,16 +383,17 @@ body {
                     But I've gone ahead and made a code anyway.<br><br>
                     The code is NOTACODE (not suspicious).<br><br>
                     I did it so quickly, I can't remember the % off so you'll have to find out at checkout.<br><br>
-                    <a href="https://virus">[SHOP HERE]</a><br><br>
+                    <a href="https://legosswatches.co/" style="color: #60A5FA;">[SHOP HERE]</a><br><br>
                     I don't know how long it will work for before they notice and take it down so I'd be quick.<br><br>
                     It was nice knowing you.<br><br>
                     – Ahmed from the LEGOSS`,
-                explanation: `This is a phishing email. Here are the red flags:
-                1. Suspicious sender domain (klaviyomail.com)
-                2. Creates urgency ("I'd be quick")
-                3. Suspicious narrative (employee going against company policy)
-                4. Suspicious discount code
-                5. Poor grammar and unprofessional tone`
+                explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
+                <li>Suspicious sender domain (klaviyomail.com)</li>
+                <li>Creates urgency ("I'd be quick")</li>
+                <li>Suspicious narrative (employee going against company policy)</li>
+                <li>Suspicious discount code</li>
+                <li>Poor grammar and unprofessional tone</li>
+                </ol>`
             },
             {
                 isPhishing: false,
@@ -402,13 +413,14 @@ body {
                     If you have any questions, please visit our <a href="https://www.amazon.com/help" style="color: #60A5FA;">Help Center</a>.<br><br>
                     Thank you for shopping with Amazon!<br><br>
                     This email was sent from a notification-only address that cannot accept incoming email. Please do not reply to this message.`,
-                explanation: `This is a legitimate email. Here's why:
-                1. Correct sender domain (amazon.com)
-                2. Includes specific order details and numbers
-                3. No urgent calls to action
-                4. Links go to the actual Amazon website
-                5. Professional tone and formatting
-                6. Includes the standard "do not reply" message`
+                explanation: `<strong>This is a legitimate email.</strong> Here's why:<ol>
+                <li>Correct sender domain (amazon.com)</li>
+                <li>Includes specific order details and numbers</li>
+                <li>No urgent calls to action</li>
+                <li>Links go to the actual Amazon website</li>
+                <li>Professional tone and formatting</li>
+                <li>Includes the standard "do not reply" message</li>
+                </ol>`
             }
         ];
 
