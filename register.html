@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phishing Quiz - Test Your Security Skills</title>
+    <title>Register - Phishing Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -53,7 +53,7 @@
         }
 
         .glowing-text {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
             background: linear-gradient(135deg, #60A5FA, #34D399);
@@ -70,30 +70,56 @@
             line-height: 1.6;
         }
 
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-bottom: 4rem;
+        .form-container {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(96, 165, 250, 0.2);
         }
 
-        .stat {
-            text-align: center;
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #60A5FA;
+        .form-label {
+            display: block;
             margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #94A3B8;
             font-size: 1rem;
+            color: #E2E8F0;
         }
 
-        .quiz-button {
+        .form-input {
+            width: 100%;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            color: #E2E8F0;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #60A5FA;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+        }
+
+        .form-input::placeholder {
+            color: #94A3B8;
+        }
+
+        .error-message {
+            color: #F87171;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .continue-button {
             display: inline-block;
             background: linear-gradient(135deg, #60A5FA, #34D399);
             color: white;
@@ -107,9 +133,10 @@
             text-decoration: none;
             position: relative;
             overflow: hidden;
+            margin-top: 1rem;
         }
 
-        .quiz-button::before {
+        .continue-button::before {
             content: '';
             position: absolute;
             top: 0;
@@ -125,11 +152,11 @@
             transition: 0.5s;
         }
 
-        .quiz-button:hover::before {
+        .continue-button:hover::before {
             left: 100%;
         }
 
-        .quiz-button:hover {
+        .continue-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(96, 165, 250, 0.4);
         }
@@ -173,40 +200,6 @@
             50% { transform: translateY(-20px) rotate(10deg); }
         }
 
-        .name-input-container {
-            display: none;
-        }
-        
-        .name-input {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(96, 165, 250, 0.3);
-            border-radius: 12px;
-            padding: 15px 20px;
-            font-size: 1rem;
-            color: #E2E8F0;
-            width: 100%;
-            max-width: 300px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .name-input:focus {
-            outline: none;
-            border-color: #60A5FA;
-            box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
-        }
-        
-        .name-input::placeholder {
-            color: #94A3B8;
-        }
-
-        .name-error {
-            color: #F87171;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
         @media (max-width: 768px) {
             .glowing-text {
                 font-size: 2.5rem;
@@ -217,9 +210,13 @@
                 padding: 0 20px;
             }
 
-            .stats {
-                flex-direction: column;
-                gap: 2rem;
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .continue-button {
+                width: 100%;
+                padding: 1rem 2rem;
             }
 
             .icon {
@@ -259,50 +256,86 @@
             </div>
         </div>
         <div class="content">
-            <h1 class="glowing-text">Test Your Phishing Detection Skills</h1>
-            <p class="subtitle">Can you spot the difference between legitimate emails and sophisticated phishing attempts? Put your cybersecurity knowledge to the test.</p>
+            <h1 class="glowing-text">Register for the Phishing Quiz</h1>
+            <p class="subtitle">Please provide your details to personalize your phishing detection experience.</p>
             
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-number">91%</div>
-                    <div class="stat-label">of cyberattacks start with phishing</div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="userName" class="form-label">Your Name</label>
+                    <input type="text" id="userName" class="form-input" placeholder="Enter your name" maxlength="30">
+                    <div id="nameError" class="error-message">Please use only letters and spaces</div>
                 </div>
-                <div class="stat">
-                    <div class="stat-number">$17.5M</div>
-                    <div class="stat-label">average cost of a data breach</div>
+                
+                <div class="form-group">
+                    <label for="userEmail" class="form-label">Your Email</label>
+                    <input type="email" id="userEmail" class="form-input" placeholder="Enter your email address">
+                    <div id="emailError" class="error-message">Please enter a valid email address</div>
                 </div>
+                
+                <button class="continue-button" onclick="validateAndContinue()">Continue to Quiz</button>
             </div>
-
-            <button class="quiz-button" onclick="goToNextPage()">Start the Quiz</button>
         </div>
     </div>
 
     <script>
-        function goToNextPage() {
-            // Check if user is registered
-            const userName = localStorage.getItem('phishingQuizUserName');
-            const userEmail = localStorage.getItem('phishingQuizUserEmail');
+        function validateAndContinue() {
+            const userNameInput = document.getElementById('userName');
+            const userEmailInput = document.getElementById('userEmail');
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
             
-            // If not registered, redirect to registration page
-            if (!userName || !userEmail) {
-                window.location.href = "register.html";
-                return;
+            // Reset error states
+            nameError.style.display = 'none';
+            emailError.style.display = 'none';
+            userNameInput.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+            userNameInput.style.boxShadow = 'none';
+            userEmailInput.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+            userEmailInput.style.boxShadow = 'none';
+            
+            let isValid = true;
+            const userName = userNameInput.value.trim();
+            const userEmail = userEmailInput.value.trim();
+            
+            // Validate name (letters and spaces only)
+            if (userName === '') {
+                nameError.textContent = 'Please enter your name';
+                nameError.style.display = 'block';
+                userNameInput.style.borderColor = '#EF4444';
+                userNameInput.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.4)';
+                isValid = false;
+            } else if (!/^[A-Za-z\s]+$/.test(userName)) {
+                nameError.textContent = 'Please use only letters and spaces';
+                nameError.style.display = 'block';
+                userNameInput.style.borderColor = '#EF4444';
+                userNameInput.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.4)';
+                isValid = false;
             }
             
-            // Otherwise proceed to quiz
-            window.location.href = "page1.html";
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (userEmail === '') {
+                emailError.textContent = 'Please enter your email address';
+                emailError.style.display = 'block';
+                userEmailInput.style.borderColor = '#EF4444';
+                userEmailInput.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.4)';
+                isValid = false;
+            } else if (!emailRegex.test(userEmail)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.style.display = 'block';
+                userEmailInput.style.borderColor = '#EF4444';
+                userEmailInput.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.4)';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Store user information in localStorage
+                localStorage.setItem('phishingQuizUserName', userName || 'Johan');
+                localStorage.setItem('phishingQuizUserEmail', userEmail);
+                
+                // Redirect to landing page
+                window.location.href = "index.html";
+            }
         }
-        
-        // Check registration on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // If user is not registered, redirect to registration page
-            const userName = localStorage.getItem('phishingQuizUserName');
-            const userEmail = localStorage.getItem('phishingQuizUserEmail');
-            
-            if (!userName || !userEmail) {
-                window.location.href = "register.html";
-            }
-        });
     </script>
 </body>
 </html>
