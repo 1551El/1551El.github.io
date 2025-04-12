@@ -200,6 +200,13 @@
             color: #94A3B8;
         }
 
+        .name-error {
+            color: #F87171;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .glowing-text {
                 font-size: 2.5rem;
@@ -257,6 +264,7 @@
             
             <div class="name-input-container">
                 <input type="text" id="userName" class="name-input" placeholder="Enter your name" maxlength="30">
+                <div id="nameError" class="name-error">Please use only letters and spaces</div>
             </div>
             
             <div class="stats">
@@ -276,9 +284,20 @@
 
     <script>
         function goToNextPage() {
-            const userName = document.getElementById('userName').value.trim() || 'User';
-            // Store the user name in localStorage
-            localStorage.setItem('phishingQuizUserName', userName);
+            const userNameInput = document.getElementById('userName');
+            const nameError = document.getElementById('nameError');
+            const userName = userNameInput.value.trim();
+            
+            // Validate name (letters and spaces only)
+            if (userName && !/^[A-Za-z\s]+$/.test(userName)) {
+                userNameInput.style.borderColor = '#EF4444';
+                userNameInput.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.4)';
+                nameError.style.display = 'block';
+                return false;
+            }
+            
+            // Store the user name in localStorage with fallback to Johan
+            localStorage.setItem('phishingQuizUserName', userName || 'Johan');
             window.location.href = "page1.html";
         }
     </script>
