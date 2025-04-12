@@ -279,30 +279,20 @@
 
     <script>
         function goToNextPage() {
-            // Check if user is registered
-            const userName = localStorage.getItem('phishingQuizUserName');
-            const userEmail = localStorage.getItem('phishingQuizUserEmail');
-            
-            // If not registered, redirect to registration page
-            if (!userName || !userEmail) {
-                window.location.href = "register.html";
-                return;
-            }
-            
-            // Otherwise proceed to quiz
-            window.location.href = "page1.html";
+            // Redirect to registration page
+            window.location.href = "register.html";
         }
         
-        // Check registration on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // If user is not registered, redirect to registration page
-            const userName = localStorage.getItem('phishingQuizUserName');
-            const userEmail = localStorage.getItem('phishingQuizUserEmail');
+        // Remove the auto-redirect on page load
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // If user is not registered, redirect to registration page
+        //     const userName = localStorage.getItem('phishingQuizUserName');
+        //     const userEmail = localStorage.getItem('phishingQuizUserEmail');
             
-            if (!userName || !userEmail) {
-                window.location.href = "register.html";
-            }
-        });
+        //     if (!userName || !userEmail) {
+        //         window.location.href = "register.html";
+        //     }
+        // });
     </script>
 </body>
 </html>
