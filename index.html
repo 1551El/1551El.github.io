@@ -173,6 +173,33 @@
             50% { transform: translateY(-20px) rotate(10deg); }
         }
 
+        .name-input-container {
+            margin-bottom: 2rem;
+        }
+        
+        .name-input {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            color: #E2E8F0;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #60A5FA;
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+        }
+        
+        .name-input::placeholder {
+            color: #94A3B8;
+        }
+
         @media (max-width: 768px) {
             .glowing-text {
                 font-size: 2.5rem;
@@ -228,6 +255,10 @@
             <h1 class="glowing-text">Test Your Phishing Detection Skills</h1>
             <p class="subtitle">Can you spot the difference between legitimate emails and sophisticated phishing attempts? Put your cybersecurity knowledge to the test.</p>
             
+            <div class="name-input-container">
+                <input type="text" id="userName" class="name-input" placeholder="Enter your name" maxlength="30">
+            </div>
+            
             <div class="stats">
                 <div class="stat">
                     <div class="stat-number">91%</div>
@@ -245,6 +276,9 @@
 
     <script>
         function goToNextPage() {
+            const userName = document.getElementById('userName').value.trim() || 'User';
+            // Store the user name in localStorage
+            localStorage.setItem('phishingQuizUserName', userName);
             window.location.href = "page1.html";
         }
     </script>

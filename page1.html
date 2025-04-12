@@ -356,13 +356,16 @@ body {
         let score = 0;
         let totalAttempts = 0;
         let currentEmailIndex = 0;
+        let userName = localStorage.getItem('phishingQuizUserName') || 'User';
+        
+        // Personalize email templates with the user's name
         const emails = [
             {
                 isPhishing: true,
                 sender: "LEGOSS support@legosswatches.co",
                 senderAddress: "<via shared.klaviyomail.com>",
                 date: "sön 9 mars",
-                content: `Hi Mohammad,<br><br>
+                content: `Hi ${userName},<br><br>
                     Listen, I spoke to the bosses earlier today.<br><br>
                     And well, they told me that we can't really run a sale today.<br><br>
                     I REALLY wanted to get you guys a sweet deal.<br><br>
@@ -387,7 +390,7 @@ body {
                 sender: "Amazon.com",
                 senderAddress: "<order-confirmation@amazon.com>",
                 date: "Today, 14:32",
-                content: `Hello John,<br><br>
+                content: `Hello ${userName},<br><br>
                     Thank you for your order. We're preparing the following items for shipment:<br><br>
                     <strong>Order #102-8876294-3499401</strong><br>
                     Estimated delivery: April 15, 2025<br><br>
