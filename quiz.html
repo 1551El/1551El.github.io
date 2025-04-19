@@ -426,7 +426,7 @@ body {
             {
                 isPhishing: true,
                 sender: "LinkedIn Security",
-                senderAddress: "<security@linkedn.com>",
+                senderAddress: "<security-noreply@linkedin.com>",
                 date: "Today, 09:17",
                 content: `<div style="text-align: center; margin-bottom: 20px;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" alt="LinkedIn Logo" style="width: 60px; height: auto;">
@@ -447,7 +447,7 @@ body {
                 
                 <p>If this was you, you can safely ignore this email.</p>
                 
-                <p>If this wasn't you, your account may have been compromised. Please <a href="https://www.linkedln.com/uas/request-password-reset" style="color: #0A66C2; font-weight: bold;">click here</a> to secure your account immediately.</p>
+                <p>If this wasn't you, your account may have been compromised. Please <a href="https://virus.com" style="color: #0A66C2; font-weight: bold;">click here</a> to secure your account immediately.</p>
                 
                 <div style="background-color: rgba(10, 102, 194, 0.1); border-left: 4px solid #0A66C2; padding: 15px; margin: 20px 0;">
                     <p style="margin: 0;"><strong>Security Tip:</strong> LinkedIn will never ask you for your password or personal information via email.</p>
@@ -460,11 +460,82 @@ body {
                     <p> 2025 LinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn Corporation.</p>
                 </div>`,
                 explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
-                <li>Despite looking professional, the "click here" link goes to https://www.linkedln.com/uas/request-password-reset. Notice the second "i" is a lowercase "L"</li>
+                <li>Despite looking professional, the "click here" link goes to virus.com (a suspicious domain)</li>
                 <li>Creates urgency with a security threat</li>
-                <li>While the sender appears to be from LinkedIn, the senders adress is security@linkedn.com </li>
+                <li>While the sender appears to be from LinkedIn, the email is designed to trick you into clicking the malicious link</li>
                 <li>Legitimate password reset emails typically don't include a direct link to reset, but rather direct you to the main website</li>
                 <li>The email tries to appear legitimate with LinkedIn branding and formatting</li>
+                </ol>`
+            },
+            {
+                isPhishing: true,
+                sender: "Netflix",
+                senderAddress: "<info@mailer.netflix.com>",
+                date: "April 16, 2025",
+                content: `<div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1920px-Netflix_2015_logo.svg.png" alt="Netflix Logo" style="width: 120px; height: auto;">
+                </div>
+                <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 15px; margin-bottom: 15px;">
+                    <h2 style="color: #E50914; margin-bottom: 10px;">A new device is using your account</h2>
+                </div>
+                
+                <p>Hi ${userName},</p>
+                
+                <p>A new device has logged into your Netflix account,<br>
+                ${userEmail}.</p>
+                
+                <div style="background-color: rgba(20, 20, 20, 0.05); border-radius: 8px; padding: 20px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #333;">Information</h3>
+                    
+                    <p><strong>Device</strong><br>
+                    Xiaomi - Smart TV</p>
+                    
+                    <p><strong>Location</strong><br>
+                    Beijing, China<br>
+                    (The location might not be exact.)</p>
+                    
+                    <p><strong>Time</strong><br>
+                    April 16th, 11:08 CEST</p>
+                </div>
+                
+                <p><strong>If it was you or someone in your household:</strong><br>
+                Enjoy!</p>
+                
+                <p><strong>If it was someone else:</strong><br>
+                Remember that only people in your household are allowed to use your account.</p>
+                
+                <p><strong>If you don't know who it was:</strong><br>
+                In that case, we recommend <a href="https://virus.com" style="color: #E50914; font-weight: bold;">changing your password immediately</a> to keep your account secure.</p>
+                
+                <div style="margin: 30px 0;">
+                    <p><strong>We're happy to help</strong><br>
+                    Visit our <a href="https://help.netflix.com" style="color: #E50914;">Help Center</a> for more information or contact us.</p>
+                    
+                    <p>Netflix</p>
+                </div>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="https://www.netflix.com" style="display: inline-block; background-color: #E50914; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">See all shows and movies</a>
+                </div>
+                
+                <div style="border-top: 1px solid #E2E8F0; margin-top: 20px; padding-top: 15px; font-size: 0.8em; color: #666;">
+                    <p>Questions? Visit our <a href="https://help.netflix.com" style="color: #E50914;">Help Center</a>.</p>
+                    <p>Netflix International B.V.</p>
+                    <p>
+                        <a href="#" style="color: #666; text-decoration: none; margin-right: 10px;">Notification settings</a>
+                        <a href="#" style="color: #666; text-decoration: none; margin-right: 10px;">Terms of Use</a>
+                        <a href="#" style="color: #666; text-decoration: none; margin-right: 10px;">Privacy</a>
+                        <a href="#" style="color: #666; text-decoration: none;">Help Center</a>
+                    </p>
+                    <p>This message was sent to ${userEmail} by Netflix as part of your Netflix membership.<br>
+                    SRC: 5F639529_62ba8e1f-0979-40e3-bc72-44b9538f5466_sv_SE_EVO</p>
+                </div>`,
+                explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
+                <li>The "change your password" link goes to virus.com instead of netflix.com</li>
+                <li>The sender address (mailer.netflix.com) is suspicious - legitimate Netflix emails come from netflix.com</li>
+                <li>The email creates urgency by suggesting your account security is compromised</li>
+                <li>The login location (Beijing, China) is designed to alarm you into taking immediate action</li>
+                <li>While the email looks professional with Netflix branding, the malicious link is the key indicator of phishing</li>
                 </ol>`
             }
         ];
