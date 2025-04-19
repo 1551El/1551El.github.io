@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phishing Email Tester</title>
+    <title>Phishing Email Detector</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 * {
@@ -206,7 +206,6 @@ body {
 
 .email-name {
     font-weight: 600;
-    color: #E2E8F0;
     font-size: 1rem;
     display: block;
     margin-bottom: 4px;
@@ -373,47 +372,49 @@ body {
 <body>
     <div class="grid"></div>
     <div class="container">
-        <div class="insideTitle">
-            <h1>Phishing Email Detector</h1>
-            <div class="score-container">
-                Score: <span id="scoreDisplay">0</span> / <span id="totalAttempts">0</span>
-            </div>
-            <div class="button-container">
-                <button class="button phishing" onclick="checkAnswer('phishing')">Phishing</button>
-                <button class="button legitimate" onclick="checkAnswer('legitimate')">Legitimate</button>
-            </div>
-            <div id="feedback" class="feedback"></div>
-            
-            <div class="email-container">
-                <div class="email-header">
-                    <img class="profile-img" src="https://freepngimg.com/save/66726-customer-account-google-service-button-search-logo/512x512" alt="Profile">
-                    <div class="email-info">
-                        <span class="email-name" id="email-name">LEGOSS support@legosswatches.co</span>
-                        <span class="email-address" id="email-address">&lt;via shared.klaviyomail.com&gt;</span>
+        <div class="email-container" id="emailContainer">
+            <div class="insideTitle">
+                <h1>Phishing Email Detector</h1>
+                <div class="score-container">
+                    Score: <span id="scoreDisplay">0</span> / <span id="totalAttempts">0</span>
+                </div>
+                <div class="button-container">
+                    <button id="phishingButton" class="button phishing">Phishing</button>
+                    <button id="legitimateButton" class="button legitimate">Legitimate</button>
+                </div>
+                <div id="feedback" class="feedback"></div>
+                
+                <div class="email-display">
+                    <div class="email-header">
+                        <img class="profile-img" src="https://freepngimg.com/save/66726-customer-account-google-service-button-search-logo/512x512" alt="Profile">
+                        <div class="email-info">
+                            <span class="email-name" id="sender">LEGOSS support@legosswatches.co</span>
+                            <span class="email-address" id="senderAddress">&lt;via shared.klaviyomail.com&gt;</span>
+                        </div>
+                        <span class="text-left" id="date">sön 9 mars</span>
                     </div>
-                    <span class="text-left" id="text-left">sön 9 mars</span>
-                </div>
-                <div class="message-container" id="message-container">
-                    Hi Mohammad,<br><br>
-                    Listen, I spoke to the bosses earlier today.<br><br>
-                    And well, they told me that we can't really run a sale today.<br><br>
-                    I REALLY wanted to get you guys a sweet deal.<br><br>
-                    And I might lose my job for this…<br><br>
-                    But I've gone ahead and made a code anyway.<br><br>
-                    The code is NOTACODE (not suspicious).<br><br>
-                    I did it so quickly, I can't remember the % off so you'll have to find out at checkout.<br><br>
-                    <a href="https://legosswatches.co/">[SHOP HERE]</a><br><br>
-                    I don't know how long it will work for before they notice and take it down so I'd be quick.<br><br>
-                    It was nice knowing you.<br><br>
-                    – Ahmed from the LEGOSS
+                    <div class="message-container" id="emailContent">
+                        Hi Mohammad,<br><br>
+                        Listen, I spoke to the bosses earlier today.<br><br>
+                        And well, they told me that we can't really run a sale today.<br><br>
+                        I REALLY wanted to get you guys a sweet deal.<br><br>
+                        And I might lose my job for this…<br><br>
+                        But I've gone ahead and made a code anyway.<br><br>
+                        The code is NOTACODE (not suspicious).<br><br>
+                        I did it so quickly, I can't remember the % off so you'll have to find out at checkout.<br><br>
+                        <a href="https://bit.ly/legoss-reset" style="color: #60A5FA;">[SHOP HERE]</a><br><br>
+                        I don't know how long it will work for before they notice and take it down so I'd be quick.<br><br>
+                        It was nice knowing you.<br><br>
+                        – Ahmed from the LEGOSS
+                    </div>
                 </div>
             </div>
-            <button class="next-button" id="nextButton" onclick="nextEmail()" disabled>Next</button>
+            <button class="next-button" id="nextButton">Next</button>
         </div>
         <div class="results-container" id="resultsContainer">
             <h2>Your Score: <span id="finalScore"></span></h2>
             <div id="phishingTips"></div>
-            <button class="try-again-button" onclick="resetQuiz()">Try Again</button>
+            <button class="try-again-button" id="tryAgainButton">Try Again</button>
         </div>
     </div>
 
@@ -421,7 +422,7 @@ body {
         let score = 0;
         let totalAttempts = 0;
         let currentEmailIndex = 0;
-        let userName = localStorage.getItem('phishingQuizUserName') || 'Johan';
+        let userName = localStorage.getItem('phishingQuizUserName') || 'User';
         let userEmail = localStorage.getItem('phishingQuizUserEmail') || 'user@example.com';
         
         // Personalize email templates with the user's name
@@ -637,42 +638,56 @@ body {
             }
         ];
 
-        // Load the initial email
-        loadEmail(currentEmailIndex);
+        // When the page loads, initialize the quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the total attempts display
+            document.getElementById('totalAttempts').textContent = emails.length.toString();
+            
+            // Load the first email
+            loadEmail(0);
+            
+            // Set up button event listeners
+            document.getElementById('phishingButton').addEventListener('click', function() {
+                checkAnswer('phishing');
+            });
+            
+            document.getElementById('legitimateButton').addEventListener('click', function() {
+                checkAnswer('legitimate');
+            });
+            
+            document.getElementById('nextButton').addEventListener('click', function() {
+                nextEmail();
+            });
+            
+            document.getElementById('tryAgainButton').addEventListener('click', function() {
+                resetQuiz();
+            });
+            
+            // Disable the next button initially
+            document.getElementById('nextButton').disabled = true;
+        });
 
         function loadEmail(index) {
-            // Reset the UI
-            const feedbackDiv = document.getElementById('feedback');
-            feedbackDiv.style.display = 'none';
-            document.querySelectorAll('.button').forEach(button => button.disabled = false);
+            const currentEmail = emails[index];
             
-            // Get the current email data
-            const email = emails[index];
+            // Update email content
+            document.getElementById('sender').textContent = currentEmail.sender;
+            document.getElementById('senderAddress').textContent = currentEmail.senderAddress;
+            document.getElementById('date').textContent = currentEmail.date;
+            document.getElementById('emailContent').innerHTML = currentEmail.content;
             
-            // Update the email container
-            document.querySelector('.email-name').textContent = email.sender;
-            document.querySelector('.email-address').textContent = email.senderAddress;
-            document.querySelector('.text-left').textContent = email.date;
-            document.querySelector('.message-container').innerHTML = email.content;
-            
-            // Update next button state - always disabled until user answers
-            const nextButton = document.getElementById('nextButton');
-            if (nextButton) {
-                nextButton.disabled = true;
-            }
-        }
-
-        function nextEmail() {
-            // Hide any visible feedback
+            // Reset feedback
             document.getElementById('feedback').style.display = 'none';
             
-            // Enable the phishing and legitimate buttons
+            // Enable buttons
             document.getElementById('phishingButton').disabled = false;
             document.getElementById('legitimateButton').disabled = false;
             
-            // Disable the next button until the user makes a choice
+            // Disable next button until user makes a choice
             document.getElementById('nextButton').disabled = true;
-            
+        }
+
+        function nextEmail() {
             // Move to the next email
             currentEmailIndex++;
             
@@ -687,13 +702,11 @@ body {
         
         function checkAnswer(userAnswer) {
             const feedbackDiv = document.getElementById('feedback');
-            const buttons = document.querySelectorAll('.button');
             const currentEmail = emails[currentEmailIndex];
             
             // Disable buttons to prevent multiple answers
-            buttons.forEach(button => {
-                button.disabled = true;
-            });
+            document.getElementById('phishingButton').disabled = true;
+            document.getElementById('legitimateButton').disabled = true;
             
             // Enable the next button
             document.getElementById('nextButton').disabled = false;
@@ -702,18 +715,14 @@ body {
             const isPhishing = currentEmail.isPhishing;
             const isCorrect = (userAnswer === 'phishing' && isPhishing) || (userAnswer === 'legitimate' && !isPhishing);
             
-            // Increment total attempts
-            totalAttempts++;
-            document.getElementById('totalAttempts').textContent = emails.length.toString();
-            
             // Update score if correct
             if (isCorrect) {
                 score++;
                 feedbackDiv.className = 'feedback correct';
-                feedbackDiv.innerHTML = `<strong>✓ Correct!</strong>${currentEmail.explanation}`;
+                feedbackDiv.innerHTML = `<strong>\u2713 Correct!</strong>${currentEmail.explanation}`;
             } else {
                 feedbackDiv.className = 'feedback incorrect';
-                feedbackDiv.innerHTML = `<strong>✗ Incorrect</strong>${currentEmail.explanation}`;
+                feedbackDiv.innerHTML = `<strong>\u2717 Incorrect</strong>${currentEmail.explanation}`;
             }
             
             // Update score display
