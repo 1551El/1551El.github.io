@@ -208,8 +208,23 @@
                 console.error('Error loading data:', error);
                 document.getElementById('responses-body').innerHTML = `
                     <tr>
-                        <td colspan="5" class="no-data">Error loading data. Make sure the backend server is running.</td>
+                        <td colspan="5" class="no-data">Error connecting to backend server. Make sure the server is running at http://localhost:3000</td>
                     </tr>
+                `;
+                
+                // Show a more prominent error message
+                const statsContainer = document.querySelector('.stats-container');
+                statsContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 20px; border-radius: 12px; text-align: center;">
+                        <h3 style="color: #EF4444; margin-bottom: 10px;">Backend Server Not Connected</h3>
+                        <p>Please make sure the backend server is running. Follow these steps:</p>
+                        <ol style="text-align: left; margin-top: 10px; margin-left: 20px;">
+                            <li>Open a command prompt (cmd) or PowerShell</li>
+                            <li>Navigate to the backend directory: <code>cd C:\\Users\\Issik\\CascadeProjects\\1551El.github.io\\backend</code></li>
+                            <li>Install dependencies: <code>npm install</code></li>
+                            <li>Start the server: <code>npm start</code></li>
+                        </ol>
+                    </div>
                 `;
             }
         }

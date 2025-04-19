@@ -568,6 +568,8 @@ body {
                 console.log('Response saved:', data);
             } catch (error) {
                 console.error('Error saving response:', error);
+                // Continue with the quiz even if the backend is not available
+                // No need to show an error to the user as this is a background operation
             }
         }
         
@@ -592,6 +594,7 @@ body {
                 }
             } catch (error) {
                 console.error('Error creating user:', error);
+                // Continue with the quiz even if the backend is not available
             }
         }
         
