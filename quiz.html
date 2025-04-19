@@ -287,6 +287,21 @@ body {
     transform: none;
 }
 
+.results-container {
+    display: none;
+    text-align: center;
+}
+
+.phishing-tips {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 20px;
@@ -359,6 +374,10 @@ body {
                 </div>
             </div>
             <button class="next-button" id="nextButton" onclick="nextEmail()" disabled>Next</button>
+        </div>
+        <div class="results-container" id="resultsContainer">
+            <h2 id="finalScore"></h2>
+            <div id="phishingTips" class="phishing-tips"></div>
         </div>
     </div>
 
@@ -457,7 +476,7 @@ body {
                 <p>Thank you,<br>
                 The LinkedIn Security Team</p>
                 
-                <div style="border-top: 1px solid #E2E8F0; margin-top: 20px; padding-top: 15px; font-size: 0.8em; color: #94A3B8;">
+                <div style="border-top: 1px solid #E2E8F0; margin-top: 20px; padding-top: 15px; font-size: 0.8em; color: #666;">
                     <p> 2025 LinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn Corporation.</p>
                 </div>`,
                 explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
@@ -613,7 +632,7 @@ body {
                 loadEmail(currentEmailIndex);
             } else {
                 // If this is the last email, show a completion message
-                alert('Quiz completed! Your final score: ' + score + ' / ' + totalAttempts);
+                showResults();
             }
         }
 
@@ -649,6 +668,84 @@ body {
             
             // Show feedback - make sure it's visible
             feedbackDiv.style.display = 'block';
+        }
+
+        function showResults() {
+            const emailContainer = document.getElementById('emailContainer');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const finalScore = document.getElementById('finalScore');
+            const phishingTips = document.getElementById('phishingTips');
+            
+            emailContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            
+            finalScore.textContent = `${score}/${emails.length}`;
+            
+            // Conditional feedback based on score
+            let tipsHTML = '';
+            
+            if (score <= 2) {
+                tipsHTML = `
+                <h3>Here are some important tips to help you spot phishing emails:</h3>
+                <div class="phishing-tips">
+                    <h4>Common Phishing Attack Techniques:</h4>
+                    <ol>
+                        <li><strong>Spoofed Email Addresses:</strong> Attackers often use email addresses that look similar to legitimate ones but have slight misspellings (like "linkedln.com" instead of "linkedin.com").</li>
+                        <li><strong>Shortened URLs:</strong> Links like bit.ly or tinyurl can hide malicious destinations. Always hover over links to see where they actually lead before clicking.</li>
+                        <li><strong>Urgent Action Required:</strong> Phishing emails often create a sense of urgency to make you act without thinking.</li>
+                        <li><strong>Poor Grammar and Spelling:</strong> Many phishing emails contain obvious grammar or spelling mistakes.</li>
+                        <li><strong>Suspicious Attachments:</strong> Never open attachments from unknown or suspicious sources.</li>
+                        <li><strong>Requests for Personal Information:</strong> Legitimate companies rarely ask for sensitive information via email.</li>
+                        <li><strong>Mismatched URLs:</strong> If the displayed link text and the actual URL don't match, it's likely a phishing attempt.</li>
+                        <li><strong>Too Good to Be True:</strong> Offers that seem unusually generous are often scams.</li>
+                    </ol>
+                    
+                    <h4>How to Protect Yourself:</h4>
+                    <ul>
+                        <li>Always verify the sender's email address carefully</li>
+                        <li>Never click on suspicious links - type the URL directly in your browser instead</li>
+                        <li>Enable two-factor authentication on all your important accounts</li>
+                        <li>Keep your software and browsers updated</li>
+                        <li>Use different passwords for different accounts</li>
+                        <li>When in doubt, contact the company directly using their official contact information</li>
+                    </ul>
+                </div>
+                `;
+            } else if (score >= 4) {
+                tipsHTML = `
+                <h3>Good job! You got ${score} out of ${emails.length} correct!</h3>
+                <div class="phishing-tips">
+                    <h4>Here are some additional tips to help you spot even the most sophisticated phishing attempts:</h4>
+                    <ol>
+                        <li><strong>Check the Sender's Email Domain:</strong> Make sure the domain matches exactly what you'd expect from the company.</li>
+                        <li><strong>Hover Before You Click:</strong> Always hover over links to see the actual URL before clicking.</li>
+                        <li><strong>Be Wary of Shortened URLs:</strong> Services like bit.ly or tinyurl can hide malicious destinations.</li>
+                        <li><strong>Look for Personalization:</strong> Legitimate emails often include personalized information beyond just your name.</li>
+                        <li><strong>Check for HTTPS:</strong> Secure websites use HTTPS in their URL and display a lock icon in the browser.</li>
+                        <li><strong>Be Suspicious of Urgency:</strong> Phishing emails often create false urgency to make you act quickly without thinking.</li>
+                        <li><strong>Verify Independently:</strong> If you're unsure, open a new browser window and navigate to the company's website directly.</li>
+                    </ol>
+                </div>
+                `;
+            } else {
+                tipsHTML = `
+                <h3>You got ${score} out of ${emails.length} correct.</h3>
+                <div class="phishing-tips">
+                    <h4>Here are some important tips to help you spot phishing emails:</h4>
+                    <ol>
+                        <li><strong>Check Email Addresses Carefully:</strong> Look for slight misspellings or domain variations.</li>
+                        <li><strong>Be Wary of Urgent Requests:</strong> Phishing emails often create false urgency.</li>
+                        <li><strong>Inspect Links Before Clicking:</strong> Hover over links to see where they actually lead.</li>
+                        <li><strong>Be Suspicious of Shortened URLs:</strong> These can hide malicious destinations.</li>
+                        <li><strong>Look for Poor Grammar and Spelling:</strong> Many phishing emails contain obvious mistakes.</li>
+                        <li><strong>Never Share Sensitive Information:</strong> Legitimate companies rarely ask for passwords or personal details via email.</li>
+                        <li><strong>When in Doubt, Reach Out:</strong> Contact the company directly using their official website or phone number.</li>
+                    </ol>
+                </div>
+                `;
+            }
+            
+            phishingTips.innerHTML = tipsHTML;
         }
     </script>
 </body>
