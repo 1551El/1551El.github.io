@@ -193,16 +193,52 @@
         // Function to load data from the backend
         async function loadData() {
             try {
+                // Clear previous error messages
+                document.querySelector('.stats-container').innerHTML = '';
+                
+                // Add loading indicators
+                document.getElementById('total-responses').textContent = 'Loading...';
+                document.getElementById('correct-percentage').textContent = 'Loading...';
+                document.getElementById('phishing-detection').textContent = 'Loading...';
+                document.getElementById('legitimate-detection').textContent = 'Loading...';
+                
+                document.getElementById('responses-body').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="no-data">Loading responses...</td>
+                    </tr>
+                `;
+                
                 // Fetch responses
                 const responsesResponse = await fetch('http://localhost:3000/api/responses');
+                if (!responsesResponse.ok) {
+                    throw new Error(`HTTP error! status: ${responsesResponse.status}`);
+                }
                 const responses = await responsesResponse.json();
+                console.log('Fetched responses:', responses);
                 
-                // Fetch statistics
-                const statsResponse = await fetch('http://localhost:3000/api/stats');
-                const stats = await statsResponse.json();
+                // Recreate stats container
+                const statsContainer = document.querySelector('.stats-container');
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-responses">0</div>
+                        <div class="stat-label">Total Responses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="correct-percentage">0%</div>
+                        <div class="stat-label">Correct Responses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="phishing-detection">0%</div>
+                        <div class="stat-label">Phishing Detection Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="legitimate-detection">0%</div>
+                        <div class="stat-label">Legitimate Detection Rate</div>
+                    </div>
+                `;
                 
                 // Update the UI
-                updateStats(stats, responses);
+                updateStats(responses);
                 updateResponsesTable(responses);
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -230,7 +266,7 @@
         }
         
         // Function to update statistics
-        function updateStats(stats, responses) {
+        function updateStats(responses) {
             // Calculate total responses
             const totalResponses = responses.length;
             document.getElementById('total-responses').textContent = totalResponses;
@@ -253,6 +289,13 @@
             const legitimateDetectionRate = legitimateEmails.length > 0 ? 
                 Math.round((correctLegitimateDetections / legitimateEmails.length) * 100) : 0;
             document.getElementById('legitimate-detection').textContent = `${legitimateDetectionRate}%`;
+            
+            console.log('Stats updated:', {
+                totalResponses,
+                correctPercentage,
+                phishingDetectionRate,
+                legitimateDetectionRate
+            });
         }
         
         // Function to update the responses table

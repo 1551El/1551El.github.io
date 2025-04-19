@@ -44,6 +44,26 @@ db.serialize(() => {
     response_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
   )`);
+  
+  // Log table creation success
+  console.log('Database tables created or already exist');
+  
+  // Check if tables are empty and log counts
+  db.get('SELECT COUNT(*) as count FROM users', [], (err, result) => {
+    if (err) {
+      console.error('Error counting users:', err);
+    } else {
+      console.log(`Users table has ${result.count} records`);
+    }
+  });
+  
+  db.get('SELECT COUNT(*) as count FROM responses', [], (err, result) => {
+    if (err) {
+      console.error('Error counting responses:', err);
+    } else {
+      console.log(`Responses table has ${result.count} records`);
+    }
+  });
 });
 
 // Routes
@@ -94,6 +114,8 @@ app.post('/api/responses', (req, res) => {
 
 // Get all responses (for admin purposes)
 app.get('/api/responses', (req, res) => {
+  console.log('Fetching all responses...');
+  
   const query = `
     SELECT r.*, u.name as user_name 
     FROM responses r
@@ -103,10 +125,11 @@ app.get('/api/responses', (req, res) => {
   
   db.all(query, [], (err, rows) => {
     if (err) {
-      console.error(err);
+      console.error('Database error when fetching responses:', err);
       return res.status(500).json({ error: 'Failed to fetch responses' });
     }
     
+    console.log(`Fetched ${rows.length} responses`);
     res.json(rows);
   });
 });

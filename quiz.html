@@ -551,6 +551,13 @@ body {
             // Show feedback
             feedbackDiv.style.display = 'block';
             
+            // Store response in localStorage
+            const responseData = {
+                response: userAnswer,
+                isCorrect: isCorrect
+            };
+            localStorage.setItem(`phishingResponse_${currentEmailIndex}`, JSON.stringify(responseData));
+            
             // Send response to backend
             saveResponseToDatabase(currentEmailIndex, currentEmail.isPhishing ? 'phishing' : 'legitimate', userAnswer, isCorrect);
         }
@@ -632,16 +639,37 @@ body {
                 // Disable the finish button to prevent multiple submissions
                 document.getElementById('finishButton').disabled = true;
                 
-                // Wait a moment to ensure all responses are saved
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Force resend all responses to ensure they're saved
+                for (let i = 0; i < emails.length; i++) {
+                    const email = emails[i];
+                    // Check if we have a response for this email in localStorage
+                    const responseKey = `phishingResponse_${i}`;
+                    const storedResponse = localStorage.getItem(responseKey);
+                    
+                    if (storedResponse) {
+                        const responseData = JSON.parse(storedResponse);
+                        console.log(`Resending response for email ${i}:`, responseData);
+                        
+                        // Force resend to backend
+                        await fetch('http://localhost:3000/api/responses', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                userId: userId,
+                                emailId: i,
+                                emailType: email.isPhishing ? 'phishing' : 'legitimate',
+                                userResponse: responseData.response,
+                                isCorrect: responseData.isCorrect
+                            })
+                        });
+                    }
+                }
                 
                 // Show completion message
-                feedbackDiv.innerHTML = `<strong>Quiz completed!</strong><br>Your final score: ${score} / ${totalAttempts}<br><br>Redirecting to the admin dashboard...`;
+                feedbackDiv.innerHTML = `<strong>Quiz completed!</strong><br>Your final score: ${score} / ${totalAttempts}<br><br>Thank you for participating!<br><br>You can view all responses in the <a href="http://localhost:3000/admin.html" target="_blank" style="color: #60A5FA;">Admin Dashboard</a>.`;
                 
-                // Redirect to the admin dashboard after a short delay
-                setTimeout(() => {
-                    window.location.href = 'http://localhost:3000/admin.html';
-                }, 2000);
             } catch (error) {
                 console.error('Error finishing quiz:', error);
                 alert('There was an error submitting your results. Please try again.');
