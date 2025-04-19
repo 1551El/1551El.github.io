@@ -538,6 +538,47 @@ body {
                 <li>The login location (Beijing, China) is designed to alarm you into taking immediate action</li>
                 <li>While the email looks professional with Netflix branding, the shortened URL is a common phishing tactic to hide malicious links</li>
                 </ol>`
+            },
+            {
+                isPhishing: false,
+                sender: "Apple",
+                senderAddress: "<appleid@apple.com>",
+                date: "April 20, 2025",
+                content: `<div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1024px-Apple_logo_black.svg.png" alt="Apple Logo" style="width: 50px; height: auto;">
+                </div>
+                <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 15px; margin-bottom: 15px;">
+                    <h2 style="color: #333; margin-bottom: 10px;">Your Apple ID password has been reset</h2>
+                </div>
+                
+                <p>Hi ${userName},</p>
+                
+                <p>The password for your Apple ID (${userEmail}) has been reset.</p>
+                
+                <p>If you did not make this change or suspect that someone unauthorized has accessed your account, please go to <a href="https://iforgot.apple.com" style="color: #0070C9;">iforgot.apple.com</a> to reset your password as soon as possible. Then sign in to your Apple ID account page at <a href="https://account.apple.com" style="color: #0070C9;">https://account.apple.com</a> to review and update your security settings.</p>
+                
+                <p>If you need further assistance, you can contact <a href="https://support.apple.com" style="color: #0070C9;">Apple Support</a>.</p>
+                
+                <p>Best regards,<br>
+                Apple Support</p>
+                
+                <div style="border-top: 1px solid #E2E8F0; margin-top: 20px; padding-top: 15px; font-size: 0.8em; color: #666; text-align: center;">
+                    <p>
+                        <a href="https://appleid.apple.com" style="color: #666; text-decoration: none; margin-right: 10px;">Apple ID</a> | 
+                        <a href="https://support.apple.com" style="color: #666; text-decoration: none; margin-right: 10px;">Support</a> | 
+                        <a href="https://www.apple.com/privacy" style="color: #666; text-decoration: none;">Privacy Policy</a>
+                    </p>
+                    <p>Copyright 2025 One Apple Park Way, Cupertino, CA 95014, United States. All rights reserved.</p>
+                </div>`,
+                explanation: `<strong>This is a legitimate email.</strong> Here's why:<ol>
+                <li>Correct sender domain (apple.com)</li>
+                <li>All links go to actual Apple domains (iforgot.apple.com, account.apple.com, support.apple.com)</li>
+                <li>The email doesn't create undue urgency or fear</li>
+                <li>It provides multiple ways to verify and address the issue</li>
+                <li>The email has proper formatting, branding, and a professional tone</li>
+                <li>It includes a standard footer with privacy policy and copyright information</li>
+                <li>It doesn't ask for personal information directly in the email</li>
+                </ol>`
             }
         ];
 
