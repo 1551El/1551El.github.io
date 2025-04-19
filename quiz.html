@@ -367,6 +367,7 @@ body {
         let totalAttempts = 0;
         let currentEmailIndex = 0;
         let userName = localStorage.getItem('phishingQuizUserName') || 'Johan';
+        let userId = localStorage.getItem('phishingQuizUserId') || null;
         
         // Personalize email templates with the user's name
         const emails = [
@@ -421,6 +422,50 @@ body {
                 <li>Professional tone and formatting</li>
                 <li>Includes the standard "do not reply" message</li>
                 </ol>`
+            },
+            {
+                isPhishing: true,
+                sender: "LinkedIn Security",
+                senderAddress: "<security-noreply@linkedin.com>",
+                date: "Today, 09:17",
+                content: `<div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" alt="LinkedIn Logo" style="width: 60px; height: auto;">
+                </div>
+                <div style="border-bottom: 1px solid #E2E8F0; padding-bottom: 15px; margin-bottom: 15px;">
+                    <h2 style="color: #0A66C2; margin-bottom: 10px;">Your LinkedIn password has been changed</h2>
+                </div>
+                
+                <p>Hi ${userName},</p>
+                
+                <p>We detected that your LinkedIn password was recently changed.</p>
+                
+                <p><strong>Change details:</strong><br>
+                Date: April 19, 2025<br>
+                Time: 08:45 AM (GMT+2)<br>
+                Device: Windows PC<br>
+                Location: Stockholm, Sweden</p>
+                
+                <p>If this was you, you can safely ignore this email.</p>
+                
+                <p>If this wasn't you, your account may have been compromised. Please <a href="https://virus.com" style="color: #0A66C2; font-weight: bold;">click here</a> to secure your account immediately.</p>
+                
+                <div style="background-color: rgba(10, 102, 194, 0.1); border-left: 4px solid #0A66C2; padding: 15px; margin: 20px 0;">
+                    <p style="margin: 0;"><strong>Security Tip:</strong> LinkedIn will never ask you for your password or personal information via email.</p>
+                </div>
+                
+                <p>Thank you,<br>
+                The LinkedIn Security Team</p>
+                
+                <div style="border-top: 1px solid #E2E8F0; margin-top: 20px; padding-top: 15px; font-size: 0.8em; color: #94A3B8;">
+                    <p> 2025 LinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn Corporation.</p>
+                </div>`,
+                explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
+                <li>Despite looking professional, the "click here" link goes to virus.com (a suspicious domain)</li>
+                <li>Creates urgency with a security threat</li>
+                <li>While the sender appears to be from LinkedIn, the email is designed to trick you into clicking the malicious link</li>
+                <li>Legitimate password reset emails typically don't include a direct link to reset, but rather direct you to the main website</li>
+                <li>The email tries to appear legitimate with LinkedIn branding and formatting</li>
+                </ol>`
             }
         ];
 
@@ -453,6 +498,9 @@ body {
             if (currentEmailIndex < emails.length - 1) {
                 currentEmailIndex++;
                 loadEmail(currentEmailIndex);
+            } else {
+                // If this is the last email, redirect to a thank you page or show a completion message
+                alert('Quiz completed! Your final score: ' + score + ' / ' + totalAttempts);
             }
         }
 
@@ -476,10 +524,10 @@ body {
             if (isCorrect) {
                 score++;
                 feedbackDiv.className = 'feedback correct';
-                feedbackDiv.innerHTML = `<strong>✓ Correct!</strong>${currentEmail.explanation}`;
+                feedbackDiv.innerHTML = `<strong> Correct!</strong>${currentEmail.explanation}`;
             } else {
                 feedbackDiv.className = 'feedback incorrect';
-                feedbackDiv.innerHTML = `<strong>✗ Incorrect</strong>${currentEmail.explanation}`;
+                feedbackDiv.innerHTML = `<strong> Incorrect</strong>${currentEmail.explanation}`;
             }
             
             // Update score display
@@ -488,7 +536,71 @@ body {
             
             // Show feedback
             feedbackDiv.style.display = 'block';
+            
+            // Send response to backend
+            saveResponseToDatabase(currentEmailIndex, currentEmail.isPhishing ? 'phishing' : 'legitimate', userAnswer, isCorrect);
         }
+        
+        // Function to save user response to the database
+        async function saveResponseToDatabase(emailId, emailType, userResponse, isCorrect) {
+            try {
+                // If we don't have a userId yet, try to create a user first
+                if (!userId) {
+                    await createUser();
+                }
+                
+                // Send the response to the backend
+                const response = await fetch('http://localhost:3000/api/responses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        emailId: emailId,
+                        emailType: emailType,
+                        userResponse: userResponse,
+                        isCorrect: isCorrect
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Response saved:', data);
+            } catch (error) {
+                console.error('Error saving response:', error);
+            }
+        }
+        
+        // Function to create a user in the database
+        async function createUser() {
+            try {
+                const response = await fetch('http://localhost:3000/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: userName
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.id) {
+                    userId = data.id;
+                    localStorage.setItem('phishingQuizUserId', userId);
+                    console.log('User created with ID:', userId);
+                }
+            } catch (error) {
+                console.error('Error creating user:', error);
+            }
+        }
+        
+        // Check if we need to create a user when the page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!userId && userName) {
+                await createUser();
+            }
+        });
     </script>
 </body>
 </html>

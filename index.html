@@ -174,7 +174,10 @@
         }
 
         .name-input-container {
-            display: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
         }
         
         .name-input {
@@ -188,6 +191,7 @@
             max-width: 300px;
             text-align: center;
             transition: all 0.3s ease;
+            margin-bottom: 1rem;
         }
         
         .name-input:focus {
@@ -233,66 +237,79 @@
         <div class="grid"></div>
         <div class="floating-icons">
             <div class="icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2L1 21h22L12 2zm0 3.83L19.13 19H4.87L12 5.83zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z"/></svg>
             </div>
             <div class="icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.783 2.826L12 1l8.217 1.826a1 1 0 0 1 .783.976v9.987a6 6 0 0 1-2.672 4.992L12 23l-6.328-4.219A6 6 0 0 1 3 13.79V3.802a1 1 0 0 1 .783-.976z"/></svg>
             </div>
             <div class="icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 15h2v5h12V4H6v5H4V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6zm6-4V8l5 4-5 4v-3H2v-2h8z"/></svg>
             </div>
             <div class="icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12v4.7c0 4.83-3.4 9.16-7 10.5-3.6-1.34-7-5.67-7-10.5V6.3l7-3.12z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 19h6V9.978l-7-5.444-7 5.444V19h6v-6h2v6zm8 2H3a1 1 0 0 1-1-1V9L12 .01 22 9v11a1 1 0 0 1-1 1z"/></svg>
             </div>
             <div class="icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 7c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6 5H6v-.99c.2-.72 3.3-2.01 6-2.01s5.8 1.29 6 2v1z"/>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 17h2v2H2v-2h2v-7a8 8 0 1 1 16 0v7zm-2 0v-7a6 6 0 1 0-12 0v7h12zm-9 4h6v2H9v-2z"/></svg>
             </div>
         </div>
         <div class="content">
-            <h1 class="glowing-text">Test Your Phishing Detection Skills</h1>
-            <p class="subtitle">Can you spot the difference between legitimate emails and sophisticated phishing attempts? Put your cybersecurity knowledge to the test.</p>
+            <h1 class="glowing-text">Phishing Email Quiz</h1>
+            <p class="subtitle">Test your ability to identify phishing emails. Can you spot the difference between legitimate and fraudulent messages?</p>
             
             <div class="stats">
                 <div class="stat">
-                    <div class="stat-number">91%</div>
-                    <div class="stat-label">of cyberattacks start with phishing</div>
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Email Examples</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number">$17.5M</div>
-                    <div class="stat-label">average cost of a data breach</div>
+                    <div class="stat-number">2 min</div>
+                    <div class="stat-label">Completion Time</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">90%</div>
+                    <div class="stat-label">Fail Phishing Tests</div>
                 </div>
             </div>
-
-            <button class="quiz-button" onclick="goToNextPage()">Start the Quiz</button>
+            
+            <div class="name-input-container">
+                <input type="text" class="name-input" id="nameInput" placeholder="Enter your name" required>
+                <button class="quiz-button" id="startQuizBtn">Start Quiz</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function goToNextPage() {
-            // Redirect to registration page
-            window.location.href = "register.html";
-        }
-        
-        // Remove the auto-redirect on page load
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // If user is not registered, redirect to registration page
-        //     const userName = localStorage.getItem('phishingQuizUserName');
-        //     const userEmail = localStorage.getItem('phishingQuizUserEmail');
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('nameInput');
+            const startQuizBtn = document.getElementById('startQuizBtn');
             
-        //     if (!userName || !userEmail) {
-        //         window.location.href = "register.html";
-        //     }
-        // });
+            // Check if user already has a name saved
+            const savedName = localStorage.getItem('phishingQuizUserName');
+            if (savedName) {
+                nameInput.value = savedName;
+            }
+            
+            // Start quiz button click handler
+            startQuizBtn.addEventListener('click', function() {
+                const name = nameInput.value.trim();
+                if (name) {
+                    // Save name to localStorage
+                    localStorage.setItem('phishingQuizUserName', name);
+                    
+                    // Redirect to quiz page
+                    window.location.href = 'quiz.html';
+                } else {
+                    alert('Please enter your name to continue');
+                }
+            });
+            
+            // Allow pressing Enter to submit
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    startQuizBtn.click();
+                }
+            });
+        });
     </script>
 </body>
 </html>
