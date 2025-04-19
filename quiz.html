@@ -384,7 +384,7 @@ body {
                     But I've gone ahead and made a code anyway.<br><br>
                     The code is NOTACODE (not suspicious).<br><br>
                     I did it so quickly, I can't remember the % off so you'll have to find out at checkout.<br><br>
-                    <a href="https://legosswatches.co/" style="color: #60A5FA;">[SHOP HERE]</a><br><br>
+                    <a href="https://bit.ly/legoss-reset" style="color: #60A5FA;">[SHOP HERE]</a><br><br>
                     I don't know how long it will work for before they notice and take it down so I'd be quick.<br><br>
                     It was nice knowing you.<br><br>
                     – Ahmed from the LEGOSS`,
@@ -394,6 +394,7 @@ body {
                 <li>Suspicious narrative (employee going against company policy)</li>
                 <li>Suspicious discount code</li>
                 <li>Poor grammar and unprofessional tone</li>
+                <li>Uses a shortened URL (bit.ly/legoss-reset) which hides the actual destination of the link</li>
                 </ol>`
             },
             {
@@ -426,7 +427,7 @@ body {
             {
                 isPhishing: true,
                 sender: "LinkedIn Security",
-                senderAddress: "<security-noreply@linkedin.com>",
+                senderAddress: "<security@linkdln.com>",
                 date: "Today, 09:17",
                 content: `<div style="text-align: center; margin-bottom: 20px;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" alt="LinkedIn Logo" style="width: 60px; height: auto;">
@@ -447,7 +448,7 @@ body {
                 
                 <p>If this was you, you can safely ignore this email.</p>
                 
-                <p>If this wasn't you, your account may have been compromised. Please <a href="https://virus.com" style="color: #0A66C2; font-weight: bold;">click here</a> to secure your account immediately.</p>
+                <p>If this wasn't you, your account may have been compromised. Please <a href="https://www.linkedln.com/uas/request-password-reset" style="color: #0A66C2; font-weight: bold;">click here</a> to secure your account immediately.</p>
                 
                 <div style="background-color: rgba(10, 102, 194, 0.1); border-left: 4px solid #0A66C2; padding: 15px; margin: 20px 0;">
                     <p style="margin: 0;"><strong>Security Tip:</strong> LinkedIn will never ask you for your password or personal information via email.</p>
@@ -460,9 +461,9 @@ body {
                     <p> 2025 LinkedIn Corporation, 1000 W Maude Ave, Sunnyvale, CA 94085. LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn Corporation.</p>
                 </div>`,
                 explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
-                <li>Despite looking professional, the "click here" link goes to virus.com (a suspicious domain)</li>
+                <li>Despite looking professional, the "click here" link goes to https://www.linkedln.com/uas/request-password-reset. Notice the second "i" is a lowercase "L"</li>
                 <li>Creates urgency with a security threat</li>
-                <li>While the sender appears to be from LinkedIn, the email is designed to trick you into clicking the malicious link</li>
+                <li>While the sender appears to be from LinkedIn, the sender's address is security@linkdln.com (notice the missing "i")</li>
                 <li>Legitimate password reset emails typically don't include a direct link to reset, but rather direct you to the main website</li>
                 <li>The email tries to appear legitimate with LinkedIn branding and formatting</li>
                 </ol>`
@@ -505,7 +506,7 @@ body {
                 Remember that only people in your household are allowed to use your account.</p>
                 
                 <p><strong>If you don't know who it was:</strong><br>
-                In that case, we recommend <a href="https://virus.com" style="color: #E50914; font-weight: bold;">changing your password immediately</a> to keep your account secure.</p>
+                In that case, we recommend <a href="https://bit.ly/netflix-help-reset" style="color: #E50914; font-weight: bold;">changing your password immediately</a> to keep your account secure.</p>
                 
                 <div style="margin: 30px 0;">
                     <p><strong>We're happy to help</strong><br>
@@ -531,11 +532,11 @@ body {
                     SRC: 5F639529_62ba8e1f-0979-40e3-bc72-44b9538f5466_sv_SE_EVO</p>
                 </div>`,
                 explanation: `<strong>This is a phishing email.</strong> Here are the red flags:<ol>
-                <li>The "change your password" link goes to virus.com instead of netflix.com</li>
+                <li>The "change your password" link uses a shortened URL (bit.ly/netflix-help-reset) which hides the actual destination of the link</li>
                 <li>The sender address (mailer.netflix.com) is suspicious - legitimate Netflix emails come from netflix.com</li>
                 <li>The email creates urgency by suggesting your account security is compromised</li>
                 <li>The login location (Beijing, China) is designed to alarm you into taking immediate action</li>
-                <li>While the email looks professional with Netflix branding, the malicious link is the key indicator of phishing</li>
+                <li>While the email looks professional with Netflix branding, the shortened URL is a common phishing tactic to hide malicious links</li>
                 </ol>`
             }
         ];
