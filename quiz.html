@@ -548,9 +548,6 @@ body {
             document.getElementById('score').textContent = score;
             document.getElementById('totalAttempts').textContent = totalAttempts;
             
-            // Show feedback
-            feedbackDiv.style.display = 'block';
-            
             // Store response in localStorage
             const responseData = {
                 response: userAnswer,
@@ -565,6 +562,8 @@ body {
         // Function to save user response to the database
         async function saveResponseToDatabase(emailId, emailType, userResponse, isCorrect) {
             try {
+                console.log(`Saving response to database: Email ${emailId}, Type ${emailType}, Response ${userResponse}, Correct ${isCorrect}`);
+                
                 // If we don't have a userId yet, try to create a user first
                 if (!userId) {
                     await createUser();
@@ -581,16 +580,22 @@ body {
                         emailId: emailId,
                         emailType: emailType,
                         userResponse: userResponse,
-                        isCorrect: isCorrect
+                        isCorrect: isCorrect ? 1 : 0 // Ensure boolean is converted to 0/1 for SQLite
                     })
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 console.log('Response saved:', data);
+                return true;
             } catch (error) {
                 console.error('Error saving response:', error);
                 // Continue with the quiz even if the backend is not available
                 // No need to show an error to the user as this is a background operation
+                return false;
             }
         }
         
@@ -639,6 +644,8 @@ body {
                 // Disable the finish button to prevent multiple submissions
                 document.getElementById('finishButton').disabled = true;
                 
+                let allSuccessful = true;
+                
                 // Force resend all responses to ensure they're saved
                 for (let i = 0; i < emails.length; i++) {
                     const email = emails[i];
@@ -650,29 +657,46 @@ body {
                         const responseData = JSON.parse(storedResponse);
                         console.log(`Resending response for email ${i}:`, responseData);
                         
-                        // Force resend to backend
-                        await fetch('http://localhost:3000/api/responses', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                userId: userId,
-                                emailId: i,
-                                emailType: email.isPhishing ? 'phishing' : 'legitimate',
-                                userResponse: responseData.response,
-                                isCorrect: responseData.isCorrect
-                            })
-                        });
+                        try {
+                            // Force resend to backend
+                            const response = await fetch('http://localhost:3000/api/responses', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    userId: userId,
+                                    emailId: i,
+                                    emailType: email.isPhishing ? 'phishing' : 'legitimate',
+                                    userResponse: responseData.response,
+                                    isCorrect: responseData.isCorrect ? 1 : 0 // Ensure boolean is converted to 0/1 for SQLite
+                                })
+                            });
+                            
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            
+                            await response.json();
+                        } catch (error) {
+                            console.error(`Error resending response for email ${i}:`, error);
+                            allSuccessful = false;
+                        }
                     }
                 }
                 
                 // Show completion message
-                feedbackDiv.innerHTML = `<strong>Quiz completed!</strong><br>Your final score: ${score} / ${totalAttempts}<br><br>Thank you for participating!<br><br>You can view all responses in the <a href="http://localhost:3000/admin.html" target="_blank" style="color: #60A5FA;">Admin Dashboard</a>.`;
+                if (allSuccessful) {
+                    feedbackDiv.innerHTML = `<strong>Quiz completed!</strong><br>Your final score: ${score} / ${totalAttempts}<br><br>Thank you for participating!<br><br>You can view all responses in the <a href="http://localhost:3000/admin.html" target="_blank" style="color: #60A5FA;">Admin Dashboard</a>.`;
+                } else {
+                    feedbackDiv.innerHTML = `<strong>Quiz completed!</strong><br>Your final score: ${score} / ${totalAttempts}<br><br>There were some issues submitting your results to the server.<br><br>You can try refreshing the admin dashboard: <a href="http://localhost:3000/admin.html" target="_blank" style="color: #60A5FA;">Admin Dashboard</a>.`;
+                }
                 
             } catch (error) {
                 console.error('Error finishing quiz:', error);
-                alert('There was an error submitting your results. Please try again.');
+                alert('There was an error submitting your results. Please make sure the backend server is running at http://localhost:3000');
+                // Re-enable the finish button to allow retry
+                document.getElementById('finishButton').disabled = false;
             }
         }
     </script>

@@ -208,13 +208,29 @@
                     </tr>
                 `;
                 
-                // Fetch responses
-                const responsesResponse = await fetch('http://localhost:3000/api/responses');
+                console.log('Fetching responses from backend...');
+                // Fetch responses with a timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const responsesResponse = await fetch('http://localhost:3000/api/responses', {
+                    signal: controller.signal,
+                    cache: 'no-cache' // Prevent caching
+                });
+                
+                clearTimeout(timeoutId);
+                
                 if (!responsesResponse.ok) {
                     throw new Error(`HTTP error! status: ${responsesResponse.status}`);
                 }
+                
                 const responses = await responsesResponse.json();
                 console.log('Fetched responses:', responses);
+                
+                // Check if we got an empty array or valid data
+                if (!Array.isArray(responses)) {
+                    throw new Error('Invalid response format from server');
+                }
                 
                 // Recreate stats container
                 const statsContainer = document.querySelector('.stats-container');
@@ -248,18 +264,21 @@
                     </tr>
                 `;
                 
-                // Show a more prominent error message
+                // Show a more prominent error message with debugging info
                 const statsContainer = document.querySelector('.stats-container');
                 statsContainer.innerHTML = `
                     <div style="grid-column: 1 / -1; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 20px; border-radius: 12px; text-align: center;">
                         <h3 style="color: #EF4444; margin-bottom: 10px;">Backend Server Not Connected</h3>
+                        <p>Error details: ${error.message}</p>
                         <p>Please make sure the backend server is running. Follow these steps:</p>
                         <ol style="text-align: left; margin-top: 10px; margin-left: 20px;">
-                            <li>Open a command prompt (cmd) or PowerShell</li>
+                            <li>Open a command prompt (cmd) as administrator</li>
                             <li>Navigate to the backend directory: <code>cd C:\\Users\\Issik\\CascadeProjects\\1551El.github.io\\backend</code></li>
                             <li>Install dependencies: <code>npm install</code></li>
                             <li>Start the server: <code>npm start</code></li>
+                            <li>Check that the server is running without errors</li>
                         </ol>
+                        <p style="margin-top: 15px;">After starting the server, click the Refresh Data button below.</p>
                     </div>
                 `;
             }

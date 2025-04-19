@@ -7,8 +7,26 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+console.log('Starting server...');
+console.log(`Server directory: ${__dirname}`);
+console.log(`Database path: ${path.join(__dirname, 'phishing_responses.db')}`);
+
 // Middleware
-app.use(cors());
+// Configure CORS to allow all origins
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Add CORS headers manually as a fallback
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..')));
 
@@ -157,8 +175,11 @@ app.get('/api/stats', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Server time: ${new Date().toISOString()}`);
+  console.log(`Admin dashboard URL: http://localhost:${PORT}/admin.html`);
+  console.log(`API endpoint: http://localhost:${PORT}/api/responses`);
 });
 
 // Handle process termination
