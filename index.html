@@ -268,43 +268,29 @@
             </div>
 
             <div class="name-input-container">
-                <input type="text" class="name-input" id="nameInput" placeholder="Enter your name" required>
                 <button class="quiz-button" id="startQuizBtn">Start Quiz</button>
             </div>
         </div>
     </div>
 
     <script>
+        function goToNextPage() {
+            // Redirect to registration page
+            window.location.href = "register.html";
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
-            const nameInput = document.getElementById('nameInput');
+            // If user is already registered, redirect to quiz page
+            const userName = localStorage.getItem('phishingQuizUserName');
+            const userEmail = localStorage.getItem('phishingQuizUserEmail');
+            
+            // Uncomment this if you want automatic redirection for registered users
+            // if (userName && userEmail) {
+            //     window.location.href = "quiz.html";
+            // }
+            
             const startQuizBtn = document.getElementById('startQuizBtn');
-            
-            // Check if user already has a name saved
-            const savedName = localStorage.getItem('phishingQuizUserName');
-            if (savedName) {
-                nameInput.value = savedName;
-            }
-            
-            // Start quiz button click handler
-            startQuizBtn.addEventListener('click', function() {
-                const name = nameInput.value.trim();
-                if (name) {
-                    // Save name to localStorage
-                    localStorage.setItem('phishingQuizUserName', name);
-                    
-                    // Redirect to quiz page
-                    window.location.href = 'quiz.html';
-                } else {
-                    alert('Please enter your name to continue');
-                }
-            });
-            
-            // Allow pressing Enter to submit
-            nameInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    startQuizBtn.click();
-                }
-            });
+            startQuizBtn.addEventListener('click', goToNextPage);
         });
     </script>
 </body>

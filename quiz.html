@@ -367,6 +367,7 @@ body {
         let totalAttempts = 0;
         let currentEmailIndex = 0;
         let userName = localStorage.getItem('phishingQuizUserName') || 'Johan';
+        let userEmail = localStorage.getItem('phishingQuizUserEmail') || 'user@example.com';
         
         // Personalize email templates with the user's name
         const emails = [
