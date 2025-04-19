@@ -359,6 +359,7 @@ body {
                 </div>
             </div>
             <button class="next-button" id="nextButton" onclick="nextEmail()" disabled>Next</button>
+            <button class="next-button" id="finishButton" onclick="finishQuiz()" style="background: linear-gradient(135deg, #10B981, #059669); display: none;">Finish</button>
         </div>
     </div>
 
@@ -489,8 +490,15 @@ body {
             
             // Update next button state - always disabled until user answers
             const nextButton = document.getElementById('nextButton');
+            const finishButton = document.getElementById('finishButton');
             if (nextButton) {
                 nextButton.disabled = true;
+            }
+            
+            // Show finish button only on the last email
+            if (finishButton) {
+                finishButton.style.display = index === emails.length - 1 ? 'inline-block' : 'none';
+                finishButton.disabled = true;
             }
         }
 
@@ -508,12 +516,18 @@ body {
             const feedbackDiv = document.getElementById('feedback');
             const buttons = document.querySelectorAll('.button');
             const nextButton = document.getElementById('nextButton');
+            const finishButton = document.getElementById('finishButton');
             
             // Disable buttons after answer
             buttons.forEach(button => button.disabled = true);
             
             // Enable the next button after answering (unless it's the last email)
             nextButton.disabled = currentEmailIndex >= emails.length - 1;
+            
+            // Enable the finish button if it's the last email
+            if (currentEmailIndex === emails.length - 1 && finishButton) {
+                finishButton.disabled = false;
+            }
             
             // Update score and total attempts
             totalAttempts++;
@@ -524,10 +538,10 @@ body {
             if (isCorrect) {
                 score++;
                 feedbackDiv.className = 'feedback correct';
-                feedbackDiv.innerHTML = `<strong> Correct!</strong>${currentEmail.explanation}`;
+                feedbackDiv.innerHTML = `<strong>✓ Correct!</strong>${currentEmail.explanation}`;
             } else {
                 feedbackDiv.className = 'feedback incorrect';
-                feedbackDiv.innerHTML = `<strong> Incorrect</strong>${currentEmail.explanation}`;
+                feedbackDiv.innerHTML = `<strong>✗ Incorrect</strong>${currentEmail.explanation}`;
             }
             
             // Update score display
@@ -604,6 +618,35 @@ body {
                 await createUser();
             }
         });
+        
+        // Function to finish the quiz and redirect to the admin dashboard
+        async function finishQuiz() {
+            // Make sure all responses are properly saved to the database
+            try {
+                // Show a loading message
+                const feedbackDiv = document.getElementById('feedback');
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '<strong>Submitting your results...</strong>';
+                feedbackDiv.style.display = 'block';
+                
+                // Disable the finish button to prevent multiple submissions
+                document.getElementById('finishButton').disabled = true;
+                
+                // Wait a moment to ensure all responses are saved
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Show completion message
+                feedbackDiv.innerHTML = `<strong>Quiz completed!</strong><br>Your final score: ${score} / ${totalAttempts}<br><br>Redirecting to the admin dashboard...`;
+                
+                // Redirect to the admin dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:3000/admin.html';
+                }, 2000);
+            } catch (error) {
+                console.error('Error finishing quiz:', error);
+                alert('There was an error submitting your results. Please try again.');
+            }
+        }
     </script>
 </body>
 </html>

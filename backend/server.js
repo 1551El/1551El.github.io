@@ -12,6 +12,15 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..')));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  if (req.method === 'POST') {
+    console.log('Request body:', JSON.stringify(req.body));
+  }
+  next();
+});
+
 // Create and initialize database
 const db = new sqlite3.Database(path.join(__dirname, 'phishing_responses.db'));
 
@@ -63,18 +72,22 @@ app.post('/api/users', (req, res) => {
 app.post('/api/responses', (req, res) => {
   const { userId, emailId, emailType, userResponse, isCorrect } = req.body;
   
-  if (!emailId || !emailType || !userResponse) {
+  if (!emailId && emailId !== 0 || !emailType || !userResponse) {
+    console.error('Missing required fields:', req.body);
     return res.status(400).json({ error: 'Missing required fields' });
   }
+
+  console.log(`Recording response: User ${userId || 'Anonymous'}, Email ${emailId}, Type ${emailType}, Response ${userResponse}, Correct ${isCorrect}`);
 
   const query = 'INSERT INTO responses (user_id, email_id, email_type, user_response, is_correct) VALUES (?, ?, ?, ?, ?)';
   
   db.run(query, [userId || null, emailId, emailType, userResponse, isCorrect], function(err) {
     if (err) {
-      console.error(err);
+      console.error('Database error:', err);
       return res.status(500).json({ error: 'Failed to record response' });
     }
     
+    console.log(`Response recorded with ID: ${this.lastID}`);
     res.status(201).json({ id: this.lastID, success: true });
   });
 });
